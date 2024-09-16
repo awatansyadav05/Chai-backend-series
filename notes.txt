@@ -1,0 +1,12 @@
+
+
+
+POSTMAN--> Postman is a popular API testing and development tool that allows developers to design, test, and document APIs. It provides a user-friendly interface for making HTTP requests and receiving responses, which is especially useful for backend and frontend developers when working with RESTful APIs. 
+
+[
+  when the user register code written move to the postman for API testing 
+  1.) create Collections
+  for the register, login and logout
+  2.) NOTE--> one for saving the time like for typing the body req on must save time for creating the {{server}} in the Environment
+  {{server}}== http://localhost:8000/api/v1
+]
