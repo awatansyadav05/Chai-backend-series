@@ -1,4 +1,5 @@
-
+ The model we are using in this project ---eraser.io
+- [Model link] (https://app.eraser.io/workspace/YtPqZ1VogxGy1jzIDkzj)
 
 
 POSTMAN--> Postman is a popular API testing and development tool that allows developers to design, test, and document APIs. It provides a user-friendly interface for making HTTP requests and receiving responses, which is especially useful for backend and frontend developers when working with RESTful APIs. 
@@ -12,3 +13,8 @@ POSTMAN--> Postman is a popular API testing and development tool that allows dev
 ]
 
 Lecture 16: Get to know about the access token and refresh token {already written in contoller.js}  
+
+
+lecture 17: [
+  majority controllers how can we write ----> more controllers
+]

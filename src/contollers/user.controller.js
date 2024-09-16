@@ -186,7 +186,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 
 
 //??? How it accessed 
-//user sends the request the of login and hence the refrshtoken got expired
+//user sends the request of login and hence the refrshtoken got expired
 //the server receives the request and check the refrsh token is valid and hence the valid is found it ensures  the token hasn't expired 
 //valid server create the new access token for user
 // the client receives the new access token and uses it for further API request without login again.
@@ -241,7 +241,7 @@ const refreshAccessToken = asyncHandler(async(req,res)=> {
         )
        )
     } catch (error) {
-      throw new ApiError(401, error?.message  || "Invalid refresh Token") 
+      throw new ApiError(401, error?.message  || "Invalid refresh") 
     }
 })
 

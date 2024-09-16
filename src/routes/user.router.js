@@ -25,7 +25,7 @@ router.route("/login").post(loginUser)
 
 router.route("/logout").post(verifyJWT, logoutUser)
 
-
+//endpoint
 //In this we didn't verifyjwt as because we have already verfiyjwt in the contoller
 router.route("/refresh-token").post(refreshAccessToken);
 
