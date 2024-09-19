@@ -1,6 +1,3 @@
-
-
-
 import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcrypt"; // Use default import
 import jwt from "jsonwebtoken"; // Use default import

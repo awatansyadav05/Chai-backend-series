@@ -17,4 +17,47 @@ Lecture 16: Get to know about the access token and refresh token {already writte
 
 lecture 17: [
   majority controllers how can we write ----> more controllers
+  ~learned to created models and created the subscription model from which the user is subscribing to the channel
+  
+  ~PRODUCTION_LEVEL_TIP ::  ensure you have created contoller file another for different tings like if the user wants to upload the profilephto then he must only upload profilephto else he have to fetch the user page full. 
 ]
+
+Lect-18: { SUBSCRIPTION MODEL
+  we have to count the number of subscriber per channel, so we will create the documents and as per the model the document--counting document means the counting of channel 
+
+  so according to video
+  we have the subscriber and channel 
+  user -> a,b,c,d,e
+  channel -> CAC, HCC, FCC 
+  so we will have to count the number of subscriber subscribing the channel so we will count the number of documents we created. 
+
+  But we have to count the  number of channel subscribing by user 'c' so what we will we do????
+  so we will just count the [subscribers se channel ke list niakl ke laao]
+
+}
+
+lecture-19: {AGGREGRATION AND PIPELINES}
+AGGREGRATION--> pipelines are the different stages that process our documents.
+--> An aggregration pipelines can return results for groups of documents, for e.g. return the total ,average, maximum and minimum values
+
+
+syntax--> db.users.aggregate([
+  {
+
+  },
+  {
+
+  }
+])
+
+$lookup: is used to combine data from two different Collections, like joining two tables in SQL.  
+from: the other collection you want to get data from ...
+localfield: the field in the current collection that you want to match
+foreignfield: the field in the other collection that should match with localfield
+as: where the combine data should be store. 
+
+$match: is used to filter documents based on specific conditions.
+it is same as WHERE in SQL.
+
+$addFields: is used to add new fields to the documents or modify existing ones, it is used to create additional fields 
+/*/refer to the contoller file/*/
