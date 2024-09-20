@@ -4,6 +4,7 @@ import { User } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utiles/cloudinary.js";
 import { ApiResponse } from "../utiles/responseAPI.js";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 
 
@@ -279,7 +280,7 @@ const changeUserPassword = asyncHandler(async (req, res) => {
 const currentUser = asyncHandler(async (req, res) => {
   return res
     .status(200)
-    .json(new ApiResponse(200, req.user, "User data fetched successfully")  )
+    .json(new ApiResponse(200, req.user, "User data fetched successfully"))
 
   //? req.user kyu kra?
   // because we have already injected the req.user in our database so we had accessed it.
@@ -315,7 +316,7 @@ const updateUser = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json( new ApiResponse (200, user, "Account details updated successfully"))
+    .json(new ApiResponse(200, user, "Account details updated successfully"))
 
 
 
@@ -337,9 +338,9 @@ const updateAvatar = asyncHandler(async (req, res) => {
   }
 
   //delete the avatar file being uploaded on cloudinary
-  
 
-  const avatar = await uploadOnCloudinary(avatarLocalPath)  
+
+  const avatar = await uploadOnCloudinary(avatarLocalPath)
 
   if (!avatar.url) {
     throw new ApiError(400, "Error while uploading file")
@@ -396,8 +397,8 @@ const updateCoverImage = asyncHandler(async (req, res) => {
 
 // IN this we are going to write the aggregation and pipelines
 // we will create the deatils of userchannelprofile 
-const getUserChannelProfile = asyncHandler(async(req,res)=>{
-  const {username} = req.params //this extracts the username parameter from the url parameter of incoming request. example::
+const getUserChannelProfile = asyncHandler(async (req, res) => {
+  const { username } = req.params //this extracts the username parameter from the url parameter of incoming request. example::
   // /profile/:username. If a client requests /profile/johndoe, username will be johndoe.
 
 
@@ -407,25 +408,25 @@ const getUserChannelProfile = asyncHandler(async(req,res)=>{
     throw new ApiError(400, "username is missing")
   }
 
-   const channel =  await User.aggregate([
+  const channel = await User.aggregate([
     //depends on you how much pipelines you create
     {
-        $match: {
-          username: username?.toLowerCase()
-        }
+      $match: {
+        username: username?.toLowerCase()
+      }
     },
     {
       //count kia kitne subscriber hai
       //this is our first pipeline where we find there subscriber
       $lookup: {
         from: "subscriptions",   //kha se lia jaega
-         // jo lookup mai ayega wo ek to smaller form ho jaega and plural ho jaega
-         localField: "_id",  //field where we get from details
-         foreignField: "channel", //kha se lena hai
-         as:"subscribers" // as -- means kya rkha jaega
+        // jo lookup mai ayega wo ek to smaller form ho jaega and plural ho jaega
+        localField: "_id",  //field where we get from details
+        foreignField: "channel", //kha se lena hai
+        as: "subscribers" // as -- means kya rkha jaega
 
       }
-      
+
     },
     {
       //kitne channel subscribe ko kra hai
@@ -433,7 +434,7 @@ const getUserChannelProfile = asyncHandler(async(req,res)=>{
         from: "subscriptions",
         localField: "_id",
         foreignField: "subscriber",   //maine kisko subscribe kra hai
-        as:"subscribeTo"
+        as: "subscribeTo"
 
       }
     },
@@ -443,12 +444,12 @@ const getUserChannelProfile = asyncHandler(async(req,res)=>{
         subscriberCount: {
           $size: "$subscibers"
         },
-        channelsSubscribedToCount:{
+        channelsSubscribedToCount: {
           $size: "$subscribedTo"
         },
-        isSubscribed:{
+        isSubscribed: {
           $cond: {
-            if: {$in :[req.user?._id , "$subscibers.subsciber"] },
+            if: { $in: [req.user?._id, "$subscibers.subsciber"] },
             then: true,
             else: false
           }
@@ -458,27 +459,72 @@ const getUserChannelProfile = asyncHandler(async(req,res)=>{
     {
       $project: {
         fullName: 1,
-        email:1,
-        username:1,
-        channelsSubscribedToCount:1,
-        subscriberCount:1,
-        isSubscribed:1,
-        avatar:1,
-        coverImage:1
+        email: 1,
+        username: 1,
+        channelsSubscribedToCount: 1,
+        subscriberCount: 1,
+        isSubscribed: 1,
+        avatar: 1,
+        coverImage: 1
       }
     }
 
   ])
-
+  //checks whether the channel is either null or undefined orr empty 
+  // .length checks its string is not empty 
   if (!channel?.length) {
     throw new ApiError(404, "Channel does not exits")
   }
 
   return res.status(200)
-  .json(
-    new ApiResponse(200, "User channel fetched successfully")
-  )
+    .json(
+      new ApiResponse(200, "User channel fetched successfully")
+    )
 
+})
+
+const getWatchHistory = asyncHandler(async (req, res) => {
+  const user = await User.aggregate([
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectId(req.user._id)
+      }
+    },
+    {
+      $lookup: {
+        //refer above for the context
+        from: "videos",
+        localField: "watchHistory",
+        foreignField: "_id",
+        as: "watchHistory",
+        pipeline: [
+          {
+            $lookup: {
+              from: "users",
+              localField: "owner",
+              foreignField: "_id",
+              as: "owner",
+              //pipeline ke andar pipeline means that we are creating the pipeline will reflect only owner field. 
+              pipeline: [
+                {
+                  $project: {
+                    fullName: 1,
+                    username: 1,
+                    avatar: 1
+                    //there the all work of pipeline work is compelted!!
+
+                  }
+                }
+              ]
+
+
+            }
+          }
+
+        ]
+      }
+    }
+  ])
 })
 
 
@@ -486,5 +532,5 @@ export {
   registerUser, loginUser, logoutUser, refreshAccessToken
   ,
   changeUserPassword, currentUser, updateUser, updateAvatar, updateCoverImage,
-  getUserChannelProfile
+  getUserChannelProfile, getWatchHistory
 }

@@ -60,4 +60,10 @@ $match: is used to filter documents based on specific conditions.
 it is same as WHERE in SQL.
 
 $addFields: is used to add new fields to the documents or modify existing ones, it is used to create additional fields 
+
+$project: stage used to include, exclude or reshape fields in documents that are passed through pipeline
 /*/refer to the contoller file/*/
+
+Lecture-20 {SUB PIPELINES}
+sub-pipelines are nested pipelines used within certain aggregation stages.
+
