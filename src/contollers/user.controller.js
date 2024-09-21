@@ -1,7 +1,7 @@
 import { asyncHandler } from "../utiles/asyncHandler.js";
 import { ApiError } from "../utiles/errorAPI.js";
 import { User } from "../models/user.model.js";
-import { uploadOnCloudinary } from "../utiles/cloudinary.js";
+import { deleteFromCloudinary, uploadOnCloudinary } from "../utiles/cloudinary.js";
 import { ApiResponse } from "../utiles/responseAPI.js";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
@@ -296,7 +296,9 @@ const currentUser = asyncHandler(async (req, res) => {
 ///>> last and least return the res 
 
 const updateUser = asyncHandler(async (req, res) => {
+  console.log("body object: ", req.body)
   const { fullName, email } = req.body
+  console.log("fullname: ", fullName, " email: ", email)
 
   if (!fullName || !email) {
     throw new ApiError(400, "All fields are required")
@@ -338,6 +340,26 @@ const updateAvatar = asyncHandler(async (req, res) => {
   }
 
   //delete the avatar file being uploaded on cloudinary
+  const userId = req.user?._id;
+  if (!userId) {
+    throw new ApiError(401, "Unauthorized");
+  }
+
+  //console.log("Reuested Id: ", userId);
+
+  const requestedUser = await User.findById(userId);
+  // console.log("Reuested user: ", requestedUser);
+  if (!requestedUser) {
+    throw new ApiError(404, "User not found");
+  }
+
+  // console.log("Reuested user avatar: ", requestedUser?.avatar);
+  const response = await deleteFromCloudinary(requestedUser?.avatar);
+  if (!response) {
+    throw new ApiError(402, "Unable to delete avatar from cloudinary");
+  }
+
+  // console.log("Response of delete in controller: ", response);
 
 
   const avatar = await uploadOnCloudinary(avatarLocalPath)
@@ -377,6 +399,32 @@ const updateCoverImage = asyncHandler(async (req, res) => {
   if (!imageLocalpath) {
     throw new ApiError(400, "Cover Image not found")
   }
+
+  //delete coverimage uploaded before
+  const userId = req.user?._id;
+  if (!userId) {
+    throw new ApiError(401, "Unauthorized");
+  }
+
+  // console.log("Reuested Id: ", userId);
+
+  const requestedUser = await User.findById(userId);
+  // console.log("Requested user: ", requestedUser);
+  if (!requestedUser) {
+    throw new ApiError(404, "User not found");
+  }
+
+  // console.log("Reuested user avatar: ", requestedUser?.avatar);
+  const response = await deleteFromCloudinary(requestedUser?.coverImage);
+  if (!response) {
+    throw new ApiError(402, "Unable to delete avatar from cloudinary");
+  }
+
+  //console.log("Response of delete in controller: ", response);
+
+
+
+
   const coverImage = await uploadOnCloudinary(imageLocalpath)
   if (!coverImage) {
     throw new ApiError(400, "Failed in uploading on cloudinary")
