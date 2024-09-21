@@ -1,5 +1,6 @@
 import mongoose,{plugin, Schema} from "mongoose";
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
+//mongoose-aggregate-paginate-v2 means we dont give only one video we give multiple videos so we use pagination
 
 const videoSchema = new Schema({
   videoFile: {
