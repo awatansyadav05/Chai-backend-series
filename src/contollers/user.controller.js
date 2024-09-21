@@ -159,8 +159,10 @@ const logoutUser = asyncHandler(async (req, res) => {
   const user = await User.findByIdAndUpdate(
     req.user?._id,
     {
+      //unset: is the removing field 
+      //while set is the updating and adding fields
       $unset: {
-        refreshToken: "",
+        refreshToken: null,     //use of uset function:: we have the pass the refreshToken : 1 because the null or undefined now the mongodb not give error of passing the null or undefined in the recent update. 
       },
     },
     {
@@ -478,14 +480,15 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
       //*refer to notes*//
       $addFields: {
         subscriberCount: {
-          $size: "$subscibers",
+          //$ifnull returns the missing value or undefined missing values as null
+          $size: { $ifNull: ["$subscribers", []] },
         },
         channelsSubscribedToCount: {
-          $size: "$subscribedTo",
+          $size: { $ifNull: ["$subscribedTo", []] },
         },
         isSubscribed: {
           $cond: {
-            if: { $in: [req.user?._id, "$subscibers.subsciber"] },
+            if: { $in: [req.user?._id, "$subscribers.subscriber"] },
             then: true,
             else: false,
           },
@@ -563,12 +566,12 @@ const getWatchHistory = asyncHandler(async (req, res) => {
   ]);
 
   return res
-  .status(200)
-  .json(
-    new ApiResponse(200, user[0].watchHistory,
-      "watch history fetched successfully"
+    .status(200)
+    .json(
+      new ApiResponse(200, user[0].watchHistory,
+        "watch history fetched successfully"
+      )
     )
-  )
 });
 
 export {
