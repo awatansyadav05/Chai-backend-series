@@ -35,7 +35,6 @@ router.route("/update-coverImage").patch(verifyJWT, upload.single("coverImage"),
 router.route("/update-user").patch(verifyJWT, updateUser);
 router.route("/change-password").post(verifyJWT, changeUserPassword);
 router.route("/current-user").get(verifyJWT, currentUser);
-router.route("/update-account").patch(verifyJWT, updateUser);
 
 //we are writing diff because the username we are sending in params that's why we have written in this route
 router.route("/c/:username").get(verifyJWT, getUserChannelProfile);
