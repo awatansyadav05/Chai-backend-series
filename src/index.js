@@ -17,3 +17,5 @@ connectDB()
     console.log("MongoDB is connected!!", err);
 
   })
+
+  //{ In this file we set the path of database connection}

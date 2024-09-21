@@ -2,6 +2,53 @@
 - [Model link] (https://app.eraser.io/workspace/YtPqZ1VogxGy1jzIDkzj)
 
 
+
+
+DATABASE CONNECTION-->  the db is in the other continent,  
+we learnt about the mongoose database 
+MONGOOSE: Mongoose is an Object Data Modeling (ODM) library for MongoDB and Node.js. It provides a structured way to interact with MongoDB, making it easier to model your data, enforce schemas, and perform CRUD (Create, Read, Update, Delete) operations.
+
+{key features of Mongoose}
+1.) Schema-based : Mongoose allows you to define a schema for your documents giving structure to your data.
+2.) Middleware-support: Mongoose supports pre and post hooks (middleware) for operations like saving and updating documents. 
+
+{//*Refer the index.js of db folder*//}
+
+
+?? What is dotenv ??
+It creates the .env file which can include the sensitive information like database connection and strings and API keys PORT decided in this file. 
+
+the API key secret etc.. of cloudinary file written in .env file {refer}
+
+?? What is cloudinary ??
+Cloudinary is a cloud-based service that provides a comprehensive solution for managing images and videos. It allows developers to store, transform, and deliver media files efficiently. Here are the key aspects of Cloudinary
+
+we have to create the cloudinary.js file for the importing the cloudinary.config()
+
+--------------------------------next we created the models-------------------
+we created Schema : {schema is blueprint which defines the data in a database}
+it also based on CRUD operations.
+-->user model
+--> subscription model {refer model.js}
+--> video model {}
+
+---------------------------------next we created the contollers------------------
+refer for the logic building and context {user.contoller.js}
+
+
+
+---------------Middleware----------
+multer - should be install and the it is used in the primarly uploads files in nodejs applications. 
+1.)File Uploads: Multer facilitates the uploading of files from client to server, handling the parsing of file data in requests.
+
+2.)Storage Options: It provides various storage options, including:
+
+3.)Memory Storage: Stores files in memory as Buffer objects.
+4.)Disk Storage: Saves files directly to disk, allowing for custom file naming and directory structure.
+5.)File Filtering: Multer allows you to filter files based on criteria (e.g., file type), enabling you to restrict uploads to specific formats.
+
+6.)Limits: You can set limits on file size and the number of files uploaded, enhancing security and resource management.
+
 POSTMAN--> Postman is a popular API testing and development tool that allows developers to design, test, and document APIs. It provides a user-friendly interface for making HTTP requests and receiving responses, which is especially useful for backend and frontend developers when working with RESTful APIs. 
 
 [

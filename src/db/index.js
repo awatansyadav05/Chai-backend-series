@@ -1,8 +1,11 @@
 import mongoose from "mongoose";
 import { DB_NAME } from "../constant.js";
 
+//{DB_NAME is the name database to which you want to connect }
+
 
 const connectDB = async () =>{
+  //mongoose.connect() porvides connection between mongodb_uri and db_name
   try{
     const connectionInstance = await mongoose.connect(
       `${process.env.MONGODB_URI}/${DB_NAME}`
