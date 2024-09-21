@@ -39,7 +39,7 @@ const deleteFromCloudinary = async (imagePath) => {
     //now use the both public id as for matching and the delete the image and update the file
     const publicId = getPublicIdFromUrl(imagePath);
     //console.log("publicId is: ", publicId);
-    
+
     const response = await cloudinary.v2.uploader.destroy(publicId, {
       resource_type: "image"
     });
