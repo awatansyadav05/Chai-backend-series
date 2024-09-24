@@ -18,10 +18,13 @@ app.use(cookieParser())
 //routes import
 //we have given the production level routing, we have given the proper router using app.use()
 import userRouter from './routes/user.router.js'
+//import { publishAVideo } from './contollers/video.contoller.js'
+import router from './routes/video.router.js'
 
 //routes decalaration
 // use of express middleware
-app.use("/api/v1/users", userRouter)
+app.use("/api/v1/users", userRouter);
+app.use("/api/v1/video", router)
 
 //http://localhost:8000/api/v1/users/register 
 
