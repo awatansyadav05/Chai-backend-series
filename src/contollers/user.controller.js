@@ -17,7 +17,7 @@ import mongoose from "mongoose";
 const registerUser = asyncHandler(async (req, res) => {
   const { fullName, email, password, username } = req.body;
 
-  console.log("email:", email);
+  //console.log("email:", email);
 
   if (
     [fullName, email, password, username].some((field) => field?.trim() === "")
