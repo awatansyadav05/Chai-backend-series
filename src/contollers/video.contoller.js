@@ -16,6 +16,9 @@ const getAllVideos = asyncHandler(async (req, res) => {
 //first  the user must be login in the postman 
 //write contoller for the publishAvideo and create router for it and make sure that the router must be imported in the app.js
 // we'll take the userId from the req.user.id and videofilepath from the req.file as well as  the thumbnail 
+//use of uploadcloudianry function
+
+//we are testing api for publish a video
 const publishAVideo = asyncHandler(async (req, res) => {
     const { title, description} = req.body
     // TODO: get video, upload to cloudinary, create video
@@ -37,6 +40,7 @@ const publishAVideo = asyncHandler(async (req, res) => {
     {
       throw new ApiError(400,"Thumbnail  is required")
     }
+
     const videoUpload = await uploadOnCloudinary(videoLocalPath);
     const thumbnailUpload = await uploadOnCloudinary(thumbnailLocalPAth)
     if(!videoUpload)
@@ -48,13 +52,16 @@ const publishAVideo = asyncHandler(async (req, res) => {
       throw new ApiError(400, "thumbanil file is required")
     }
 
+
+    //use of create method to create the video
+
     const video = await Video.create(
       {
         videoFile: videoUpload.url,
         thumbnail: thumbnailUpload.url,
         title,
         description,
-       // duration: videoLocalPath.duration,
+       duration: videoLocalPath.duration,
         owner: userId,
         isPublished: true,
 
@@ -74,6 +81,7 @@ const publishAVideo = asyncHandler(async (req, res) => {
 const getVideoById = asyncHandler(async (req, res) => {
     const { videoId } = req.params
     //TODO: get video by id
+    
 })
 
 const updateVideo = asyncHandler(async (req, res) => {
